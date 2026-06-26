@@ -56,7 +56,7 @@ lightning_logs/
 runs/
 
 # Model/data artifacts generated locally
-data/
+/data/
 checkpoints/
 *.pt
 *.pth
