@@ -12,6 +12,8 @@ from api.main import app  # noqa: E402
 def test_demo_readiness_endpoint_reports_launch_contract(monkeypatch) -> None:
     monkeypatch.setenv("NEUROSIGHT_RUNTIME_MODE", "demo")
     monkeypatch.setenv("NEUROSIGHT_CLASS_MODE", "six_class_demo")
+    monkeypatch.delenv("NEUROSIGHT_PATIENT_CSV_PATH", raising=False)
+    monkeypatch.delenv("NEUROSIGHT_DEMO_CSV_PATH", raising=False)
     client = TestClient(app)
 
     response = client.get("/v1/demo/readiness")
@@ -20,7 +22,7 @@ def test_demo_readiness_endpoint_reports_launch_contract(monkeypatch) -> None:
     payload = response.json()
     check_ids = {item["id"] for item in payload["checks"]}
 
-    assert payload["status"] in {"demo_ready", "demo_ready_with_warnings"}
+    assert payload["status"] in {"demo_ready", "demo_ready_with_warnings"}, payload
     assert payload["clinical_use_allowed"] is False
     assert payload["recommended_patient_id"]
     assert "data_contract" in check_ids
