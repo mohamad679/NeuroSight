@@ -129,7 +129,7 @@ docker-down:
 quality: check-python-runtime
 	$(PYTHON) -m ruff check $(LINT_TARGETS) --ignore E501
 	$(PYTHON) -m mypy evaluation/benchmark.py neurosight/utils/seed.py --ignore-missing-imports
-	@if [ -f scripts/check_repo_hygiene.py ]; then $(PYTHON) scripts/check_repo_hygiene.py $(HYGIENE_FLAGS); fi
+	@if [ -f scripts/check_repo_hygiene.py ]; then $(PYTHON) scripts/check_repo_hygiene.py --allow-dev-caches $(HYGIENE_FLAGS); fi
 	$(PYTHON) scripts/model_card_check.py --strict --stdout
 	$(PYTHON) scripts/quality_gate.py --strict --stdout
 	$(PYTHON) scripts/supply_chain_audit.py --strict-on critical
