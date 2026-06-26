@@ -1196,14 +1196,14 @@ def _demo_csv_path() -> Path:
 
 def _patient_csv_path() -> Path:
     """Resolve patient metadata CSV path for demo or authorized ADNI-style data."""
-    configured_path = os.environ.get("NEUROSIGHT_PATIENT_CSV_PATH", "").strip()
-    if configured_path:
-        return Path(configured_path)
-
     runtime_mode = _env_choice("NEUROSIGHT_RUNTIME_MODE", "demo", RUNTIME_MODES)
     demo_path = _demo_csv_path()
     if runtime_mode == "demo":
         return demo_path
+
+    configured_path = os.environ.get("NEUROSIGHT_PATIENT_CSV_PATH", "").strip()
+    if configured_path:
+        return Path(configured_path)
     return Path("data/ADNIMERGE.csv")
 
 
