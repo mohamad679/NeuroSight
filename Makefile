@@ -103,7 +103,7 @@ model-card-check: check-python-runtime
 	$(PYTHON) scripts/model_card_check.py --strict --stdout
 
 quality-gate: check-python-runtime
-	$(PYTHON) scripts/quality_gate.py --strict --stdout
+	$(PYTHON) scripts/quality_gate.py --strict
 
 github-readiness:
 	$(PYTHON) scripts/github_readiness.py --strict
@@ -131,7 +131,7 @@ quality: check-python-runtime
 	$(PYTHON) -m mypy evaluation/benchmark.py neurosight/utils/seed.py --ignore-missing-imports
 	@if [ -f scripts/check_repo_hygiene.py ]; then $(PYTHON) scripts/check_repo_hygiene.py --allow-dev-caches $(HYGIENE_FLAGS); fi
 	$(PYTHON) scripts/model_card_check.py --strict --stdout
-	$(PYTHON) scripts/quality_gate.py --strict --stdout
+	$(PYTHON) scripts/quality_gate.py --strict
 	$(PYTHON) scripts/supply_chain_audit.py --strict-on critical
 
 benchmark-smoke: check-python-runtime
