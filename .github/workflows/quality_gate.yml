@@ -35,7 +35,7 @@ jobs:
 
       - name: Upload quality gate report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: neurosight-quality-gate-report
           path: logs/quality/neurosight_quality_gate_report.json
