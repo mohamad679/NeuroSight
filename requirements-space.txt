@@ -22,7 +22,7 @@ langgraph==0.1.1
 langchain==0.2.0
 cryptography==42.0.8
 grpcio==1.76.0
-protobuf==5.29.5
+protobuf==7.35.1
 pycryptodome==3.23.0
 tomli==2.3.0
 iterators==0.0.2
