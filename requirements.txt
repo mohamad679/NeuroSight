@@ -1,0 +1,37 @@
+# Hugging Face Spaces mounts only this file during the dependency install
+# step, so keep it self-contained instead of chaining to requirements_ui.txt.
+# Bounds mirror pyproject.toml. They keep the public demo install reproducible
+# while allowing patch-level security fixes.
+gradio>=4.40,<4.45
+fastapi==0.111.0
+starlette>=0.37.2,<0.38
+torch==2.2.0
+monai==1.3.0
+einops>=0.7,<0.9
+mne==1.6.0
+pandas>=2.1,<2.3
+matplotlib>=3.8,<3.10
+numpy>=1.26,<2.0
+pydantic>=2.0,<2.11
+huggingface_hub<1.0
+langgraph==0.1.1
+langchain==0.2.0
+# Transitive dependencies of flwr (installed via --no-deps due to typer conflict with gradio)
+cryptography>=42.0.4
+grpcio>=1.60.0
+protobuf>=4.25.2
+pycryptodome>=3.18.0
+tomli>=2.0.1
+iterators>=0.0.2
+networkx==3.2
+shap==0.44.0
+numba==0.59.1
+# sklearn 1.5+ removed/deprecated several old multiclass knobs. The code avoids
+# those parameters and is tested against the 1.4-1.7 stable window.
+scikit-learn>=1.4,<1.8
+nibabel>=5.2,<5.4
+pydicom>=2.4,<3.1
+opentelemetry-api>=1.24,<2
+opentelemetry-sdk>=1.24,<2
+opentelemetry-instrumentation-fastapi>=0.45b0,<1
+opentelemetry-exporter-otlp>=1.24,<2

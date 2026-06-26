@@ -1,0 +1,861 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NeuroSight Console</title>
+  <meta name="description" content="Local NeuroSight operations console connected to the Hugging Face backend." />
+  <link rel="stylesheet" href="style.css" />
+  <script>
+    window.NEUROSIGHT_BACKEND = "__BACKEND_URL__";
+  </script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">N</div>
+        <div>
+          <h1>NeuroSight</h1>
+          <p>Local console</p>
+        </div>
+      </div>
+
+      <nav class="nav" aria-label="Console sections">
+        <button class="nav-item is-active" type="button" data-view="overview">Overview</button>
+        <button class="nav-item" type="button" data-view="demo">Demo</button>
+        <button class="nav-item" type="button" data-view="data">Data</button>
+        <button class="nav-item" type="button" data-view="diagnosis">Risk Profiling</button>
+        <button class="nav-item" type="button" data-view="uploads">Uploads</button>
+        <button class="nav-item" type="button" data-view="streaming">Streaming</button>
+        <button class="nav-item" type="button" data-view="kg">Knowledge Graph</button>
+        <button class="nav-item" type="button" data-view="xai">XAI</button>
+        <button class="nav-item" type="button" data-view="trust">Trust</button>
+        <button class="nav-item" type="button" data-view="evaluation">Evaluation</button>
+        <button class="nav-item" type="button" data-view="models">Models</button>
+      </nav>
+
+      <div class="connection-panel">
+        <span class="label">Backend</span>
+        <span id="backend" class="backend-url"></span>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow" id="phaseLabel">Complete console</p>
+          <h2 id="viewTitle">Overview</h2>
+        </div>
+        <button class="button secondary" id="healthBtn" type="button">Check Backend</button>
+      </header>
+
+      <section class="view is-active" id="overview" aria-labelledby="viewTitle">
+        <div class="hero-panel">
+          <div>
+            <p class="eyebrow">System Status</p>
+            <h3>Backend and model readiness</h3>
+          </div>
+          <div class="status-pill" id="statusPill">Not checked</div>
+        </div>
+
+        <div class="metrics-grid">
+          <div class="metric">
+            <span>Status</span>
+            <strong id="metricStatus">--</strong>
+          </div>
+          <div class="metric">
+            <span>Version</span>
+            <strong id="metricVersion">--</strong>
+          </div>
+          <div class="metric">
+            <span>Uptime</span>
+            <strong id="metricUptime">--</strong>
+          </div>
+          <div class="metric">
+            <span>Knowledge Graph</span>
+            <strong id="metricKg">--</strong>
+          </div>
+          <div class="metric">
+            <span>Runtime</span>
+            <strong id="metricRuntime">--</strong>
+          </div>
+          <div class="metric">
+            <span>UI Coverage</span>
+            <strong id="metricCoverage">--</strong>
+          </div>
+        </div>
+
+        <div class="split-grid">
+          <section class="panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Models</p>
+                <h3>Loaded Components</h3>
+              </div>
+            </div>
+            <div class="model-list" id="modelList">
+              <div class="empty-line">Run a health check to load model status.</div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Registry</p>
+                <h3>Production Model</h3>
+              </div>
+            </div>
+            <div class="registry-summary" id="productionSummary">No production summary loaded.</div>
+          </section>
+        </div>
+
+        <div class="split-grid">
+          <section class="panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Runtime</p>
+                <h3>Scientific Scope</h3>
+              </div>
+            </div>
+            <div class="runtime-contract" id="runtimeContract">
+              <div class="empty-line">Run a health check to load runtime mode and class scope.</div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Coverage</p>
+                <h3>Backend Capabilities</h3>
+              </div>
+            </div>
+            <div class="registry-summary" id="capabilitySummary">No capability summary loaded.</div>
+            <div class="capability-list" id="capabilityList">
+              <div class="empty-line">Run a health check to load backend capability coverage.</div>
+            </div>
+          </section>
+        </div>
+
+        <section class="panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Payload</p>
+              <h3>Health Response</h3>
+            </div>
+          </div>
+          <pre id="healthRaw">No health check yet.</pre>
+        </section>
+      </section>
+
+      <section class="view" id="demo">
+        <div class="hero-panel">
+          <div>
+            <p class="eyebrow">Launch Readiness</p>
+            <h3>Final demo checklist and guided run flow</h3>
+          </div>
+          <div class="action-row">
+            <button class="button secondary" id="demoReadinessBtn" type="button">Load Demo Readiness</button>
+          </div>
+        </div>
+
+        <div class="metrics-grid">
+          <div class="metric">
+            <span>Status</span>
+            <strong id="demoMetricStatus">--</strong>
+          </div>
+          <div class="metric">
+            <span>Ready Checks</span>
+            <strong id="demoMetricReady">--</strong>
+          </div>
+          <div class="metric">
+            <span>Warnings</span>
+            <strong id="demoMetricWarnings">--</strong>
+          </div>
+          <div class="metric">
+            <span>Patient ID</span>
+            <strong id="demoMetricPatient">--</strong>
+          </div>
+        </div>
+
+        <div class="work-grid">
+          <section class="panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Checklist</p>
+                <h3>Readiness Gates</h3>
+              </div>
+            </div>
+            <div class="readiness-list" id="demoChecklist">
+              <div class="empty-line">Load demo readiness to inspect launch gates.</div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Run Flow</p>
+                <h3>Recommended Demo Path</h3>
+              </div>
+            </div>
+            <div class="readiness-list" id="demoFlow">
+              <div class="empty-line">No demo flow loaded.</div>
+            </div>
+          </section>
+        </div>
+
+        <section class="panel output-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">ADNI-style Private Run</p>
+              <h3>Operator Environment</h3>
+            </div>
+          </div>
+          <div class="readiness-list" id="demoAdniRun">
+            <div class="empty-line">No ADNI-style run instructions loaded.</div>
+          </div>
+          <pre id="demoRaw">No demo readiness payload yet.</pre>
+        </section>
+      </section>
+
+      <section class="view" id="data">
+        <div class="hero-panel">
+          <div>
+            <p class="eyebrow">Data Contract</p>
+            <h3>Demo and ADNI-style cohort readiness</h3>
+          </div>
+          <div class="action-row">
+            <button class="button secondary" id="dataStatusBtn" type="button">Load Data Status</button>
+            <button class="button secondary" id="demoPatientsBtn" type="button">Load Demo Patients</button>
+          </div>
+        </div>
+
+        <div class="metrics-grid">
+          <div class="metric">
+            <span>Data Status</span>
+            <strong id="dataMetricStatus">--</strong>
+          </div>
+          <div class="metric">
+            <span>Rows</span>
+            <strong id="dataMetricRows">--</strong>
+          </div>
+          <div class="metric">
+            <span>Source</span>
+            <strong id="dataMetricSource">--</strong>
+          </div>
+          <div class="metric">
+            <span>Recommended ID</span>
+            <strong id="dataMetricPatient">--</strong>
+          </div>
+        </div>
+
+        <div class="work-grid">
+          <section class="panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Readiness</p>
+                <h3>Dataset Summary</h3>
+              </div>
+            </div>
+            <div class="data-summary" id="dataSummary">
+              <div class="empty-line">Load data status to inspect CSV, schema, class balance, and modality files.</div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Samples</p>
+                <h3>Demo Patients</h3>
+              </div>
+            </div>
+            <div class="table-wrap" id="demoPatientsTable">
+              <div class="empty-line">No demo patients loaded.</div>
+            </div>
+          </section>
+        </div>
+
+        <section class="panel output-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Payload</p>
+              <h3>Data Response</h3>
+            </div>
+          </div>
+          <pre id="dataRaw">No data response yet.</pre>
+        </section>
+      </section>
+
+      <section class="view" id="diagnosis">
+        <div class="diagnosis-grid">
+          <section class="panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Synthetic Risk Profiling</p>
+                <h3>Synthetic Patient Assessment</h3>
+              </div>
+              <span class="mode-chip">Cognitive or patient ID</span>
+            </div>
+
+            <form id="diagnosisForm">
+              <div class="form-grid">
+                <label>Backend Patient ID
+                  <input name="patient_id" placeholder="RID stored on Hugging Face backend" autocomplete="off" />
+                </label>
+                <label>MMSE
+                  <input name="mmse" type="number" value="26" min="0" max="30" step="1" />
+                </label>
+                <label>MoCA
+                  <input name="moca" type="number" value="24" min="0" max="30" step="1" />
+                </label>
+                <label>CDRSB
+                  <input name="cdrsb" type="number" value="0.5" min="0" max="18" step="0.5" />
+                </label>
+                <label>ADAS11
+                  <input name="adas11" type="number" value="10" min="0" max="70" step="0.5" />
+                </label>
+                <label>RAVLT Immediate
+                  <input name="ravlt_immediate" type="number" value="40" min="0" max="75" step="1" />
+                </label>
+                <label>RAVLT Learning
+                  <input name="ravlt_learning" type="number" value="4" min="-15" max="15" step="0.5" />
+                </label>
+                <label>FAQ
+                  <input name="faq" type="number" value="2" min="0" max="30" step="1" />
+                </label>
+                <label>Age
+                  <input name="age" type="number" value="72" min="0" max="120" step="1" />
+                </label>
+                <label class="full">Research Query
+                  <textarea name="query" placeholder="What is the model-generated risk profile?"></textarea>
+                </label>
+              </div>
+              <div class="embedding-strip">
+                <label class="check-row">
+                  <input id="useEmbeddings" type="checkbox" checked />
+                  <span>Use active embeddings</span>
+                </label>
+                <div class="mini-statuses" id="diagnosisEmbeddingStatus">
+                  <span class="mini-status">MRI empty</span>
+                  <span class="mini-status">EEG empty</span>
+                  <span class="mini-status">Cognitive empty</span>
+                </div>
+              </div>
+              <button class="button primary" id="analyzeBtn" type="submit">Analyze</button>
+            </form>
+
+            <p class="surface-note">Patient ID uses Space-hosted data when available. Empty patient ID uses the cognitive scores.</p>
+          </section>
+
+          <section class="panel result-panel" aria-live="polite">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Output</p>
+                <h3>Result</h3>
+              </div>
+            </div>
+            <div class="result-body">
+              <div id="badge" class="diagnosis-badge">READY</div>
+              <div class="meter"><div id="bar"></div></div>
+              <div id="confidence" class="muted">Confidence: 0.0%</div>
+              <pre id="report">No analysis yet.</pre>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section class="view" id="uploads">
+        <div class="hero-panel">
+          <div>
+            <p class="eyebrow">Embeddings</p>
+            <h3>Upload and encode modalities</h3>
+          </div>
+          <div class="action-row">
+            <button class="button secondary" id="modalityStatusBtn" type="button">Load Modality Status</button>
+            <button class="button secondary" id="clearEmbeddingsBtn" type="button">Clear Embeddings</button>
+          </div>
+        </div>
+
+        <section class="panel output-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Preprocessing</p>
+              <h3>Modality Readiness</h3>
+            </div>
+          </div>
+          <div class="modality-contract" id="modalityContract">
+            <div class="empty-line">Run a health check or load modality status to inspect preprocessing readiness.</div>
+          </div>
+        </section>
+
+        <div class="upload-grid">
+          <section class="panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">MRI</p>
+                <h3>Volume Encoder</h3>
+              </div>
+              <span class="mode-chip">768 dim</span>
+            </div>
+            <form id="mriUploadForm" class="upload-form">
+              <label>MRI file
+                <input name="file" type="file" accept=".npy,.nii,.nii.gz,.zip" />
+              </label>
+              <button class="button primary" type="submit">Upload MRI</button>
+            </form>
+            <div class="upload-status" id="mriUploadStatus">No MRI embedding.</div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">EEG</p>
+                <h3>Signal Encoder</h3>
+              </div>
+              <span class="mode-chip">256 dim</span>
+            </div>
+            <form id="eegUploadForm" class="upload-form">
+              <label>EEG file
+                <input name="file" type="file" accept=".npy,.edf" />
+              </label>
+              <button class="button primary" type="submit">Upload EEG</button>
+            </form>
+            <div class="upload-status" id="eegUploadStatus">No EEG embedding.</div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Cognitive</p>
+                <h3>Score Encoder</h3>
+              </div>
+              <span class="mode-chip">64 dim</span>
+            </div>
+            <div class="upload-form">
+              <button class="button primary" id="cognitiveUploadBtn" type="button">Encode Cognitive Scores</button>
+            </div>
+            <div class="upload-status" id="cognitiveUploadStatus">No cognitive embedding.</div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Active State</p>
+                <h3>Embedding Preview</h3>
+              </div>
+            </div>
+            <div class="embedding-summary" id="embeddingSummary"></div>
+            <pre id="embeddingPreview">No embeddings generated.</pre>
+          </section>
+        </div>
+      </section>
+
+      <section class="view" id="streaming">
+        <div class="work-grid">
+          <section class="panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Streaming</p>
+                <h3>Agent Evaluation Flow</h3>
+              </div>
+              <span class="mode-chip">SSE</span>
+            </div>
+            <form id="streamForm">
+              <div class="form-grid">
+                <label>Patient ID
+                  <input name="patient_id" value="SYN_STREAM_0001" autocomplete="off" />
+                </label>
+                <label class="full">Research Query
+                  <textarea name="query">Provide model-generated risk profile summary.</textarea>
+                </label>
+              </div>
+              <label class="check-row stream-check">
+                <input name="use_scores" type="checkbox" checked />
+                <span>Use current cognitive scores</span>
+              </label>
+              <button class="button primary" id="streamBtn" type="submit">Start Streaming Evaluation</button>
+            </form>
+          </section>
+
+          <section class="panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Timeline</p>
+                <h3>Agent Status</h3>
+              </div>
+            </div>
+            <div class="timeline" id="streamTimeline"></div>
+          </section>
+        </div>
+        <section class="panel output-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Payload</p>
+              <h3>Streaming Events</h3>
+            </div>
+          </div>
+          <pre id="streamRaw">No stream started.</pre>
+        </section>
+      </section>
+
+      <section class="view" id="kg">
+        <div class="work-grid">
+          <section class="panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Knowledge Graph</p>
+                <h3>Temporal Patient Query</h3>
+              </div>
+            </div>
+            <form id="kgForm">
+              <div class="form-grid">
+                <label>Patient ID
+                  <input name="patient_id" placeholder="e.g. SYN_0001" autocomplete="off" />
+                </label>
+                <label>Query Type
+                  <select name="query_type">
+                    <option value="history">history</option>
+                    <option value="similar">similar</option>
+                    <option value="snapshot">snapshot</option>
+                    <option value="progression">progression</option>
+                  </select>
+                </label>
+                <label>Date
+                  <input name="target_date" placeholder="YYYY-MM-DD" autocomplete="off" />
+                </label>
+                <label>Top K
+                  <input name="top_k" type="number" min="1" max="20" value="5" />
+                </label>
+              </div>
+              <button class="button primary" id="kgBtn" type="submit">Query Knowledge Graph</button>
+            </form>
+          </section>
+
+          <section class="panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Results</p>
+                <h3>KG Table</h3>
+              </div>
+            </div>
+            <div class="table-wrap" id="kgTable">
+              <div class="empty-line">No KG query yet.</div>
+            </div>
+          </section>
+        </div>
+        <section class="panel output-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Payload</p>
+              <h3>KG Response</h3>
+            </div>
+          </div>
+          <pre id="kgRaw">No KG response yet.</pre>
+        </section>
+      </section>
+
+      <section class="view" id="xai">
+        <div class="hero-panel">
+          <div>
+            <p class="eyebrow">Explainability Contract</p>
+            <h3>Method availability and interpretation policy</h3>
+          </div>
+          <div class="action-row">
+            <button class="button secondary" id="xaiStatusBtn" type="button">Load XAI Status</button>
+          </div>
+        </div>
+
+        <div class="work-grid">
+          <section class="panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Methods</p>
+                <h3>Runtime Availability</h3>
+              </div>
+            </div>
+            <div class="method-grid" id="xaiMethodGrid">
+              <div class="empty-line">Load XAI status to inspect method coverage.</div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Policy</p>
+                <h3>Interpretation Boundary</h3>
+              </div>
+            </div>
+            <div class="registry-summary" id="xaiPolicySummary">No interpretation policy loaded.</div>
+          </section>
+        </div>
+
+        <div class="work-grid">
+          <section class="panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Explainability</p>
+                <h3>Cognitive Feature Importance</h3>
+              </div>
+            </div>
+            <form id="xaiForm">
+              <div class="form-grid">
+                <label>Patient ID
+                  <input name="patient_id" value="PATIENT_XAI_001" autocomplete="off" />
+                </label>
+                <label>Modality
+                  <select name="modality">
+                    <option value="cognitive">cognitive</option>
+                    <option value="mri">mri</option>
+                    <option value="eeg">eeg</option>
+                  </select>
+                </label>
+                <label>Target Class
+                  <select name="target_class">
+                    <option value="">auto</option>
+                    <option value="0">0 normal</option>
+                    <option value="1">1 mci</option>
+                    <option value="2">2 ad</option>
+                    <option value="3">3 ftd</option>
+                    <option value="4">4 lbd</option>
+                    <option value="5">5 vd</option>
+                  </select>
+                </label>
+              </div>
+              <button class="button primary" id="xaiBtn" type="submit">Generate XAI</button>
+            </form>
+          </section>
+
+          <section class="panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Summary</p>
+                <h3>Explanation</h3>
+              </div>
+            </div>
+            <div class="registry-summary" id="xaiSummary">No explanation yet.</div>
+          </section>
+        </div>
+        <section class="panel output-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Feature Importance</p>
+              <h3>XAI Chart</h3>
+            </div>
+          </div>
+          <div class="bar-chart" id="xaiChart">
+            <div class="empty-line">No XAI result yet.</div>
+          </div>
+          <pre id="xaiRaw">No XAI payload yet.</pre>
+        </section>
+      </section>
+
+      <section class="view" id="trust">
+        <div class="hero-panel">
+          <div>
+            <p class="eyebrow">Trust Layer</p>
+            <h3>Privacy, security, and scientific disclosure</h3>
+          </div>
+          <div class="action-row">
+            <button class="button secondary" id="trustStatusBtn" type="button">Load Trust Status</button>
+          </div>
+        </div>
+
+        <div class="metrics-grid">
+          <div class="metric">
+            <span>Private ADNI</span>
+            <strong id="trustMetricAdni">--</strong>
+          </div>
+          <div class="metric">
+            <span>Clinical Use</span>
+            <strong id="trustMetricClinical">--</strong>
+          </div>
+          <div class="metric">
+            <span>Auth</span>
+            <strong id="trustMetricAuth">--</strong>
+          </div>
+          <div class="metric">
+            <span>Upload Limit</span>
+            <strong id="trustMetricUpload">--</strong>
+          </div>
+        </div>
+
+        <div class="work-grid">
+          <section class="panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Privacy</p>
+                <h3>Data Handling</h3>
+              </div>
+            </div>
+            <div class="trust-contract" id="trustPrivacy">
+              <div class="empty-line">No privacy contract loaded.</div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Security</p>
+                <h3>Runtime Controls</h3>
+              </div>
+            </div>
+            <div class="trust-contract" id="trustSecurity">
+              <div class="empty-line">No security contract loaded.</div>
+            </div>
+          </section>
+        </div>
+
+        <section class="panel output-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Disclosure</p>
+              <h3>Scientific Guardrails</h3>
+            </div>
+          </div>
+          <div class="trust-contract" id="trustDisclosure">
+            <div class="empty-line">No scientific disclosure loaded.</div>
+          </div>
+          <pre id="trustRaw">No trust payload yet.</pre>
+        </section>
+      </section>
+
+      <section class="view" id="evaluation">
+        <div class="hero-panel">
+          <div>
+            <p class="eyebrow">Evaluation</p>
+            <h3>Metrics, history, baselines, CV, and benchmark</h3>
+          </div>
+          <div class="action-row">
+            <button class="button secondary" id="evalMetricsBtn" type="button">Load Metrics</button>
+            <button class="button secondary" id="evalHistoryBtn" type="button">Load History</button>
+            <button class="button secondary" id="evalReportBtn" type="button">Load Report</button>
+          </div>
+        </div>
+        <div class="upload-grid">
+          <section class="panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Baseline</p>
+                <h3>Run Evaluation</h3>
+              </div>
+            </div>
+            <div class="upload-form">
+              <button class="button primary" id="evalRunBtn" type="button">Run Baseline Evaluation</button>
+            </div>
+          </section>
+          <section class="panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Benchmark</p>
+                <h3>Compare Models</h3>
+              </div>
+            </div>
+            <div class="upload-form">
+              <button class="button primary" id="evalBenchmarkBtn" type="button">Run Benchmark</button>
+            </div>
+          </section>
+          <section class="panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Cross Validation</p>
+                <h3>5-Fold CV</h3>
+              </div>
+            </div>
+            <div class="upload-form">
+              <button class="button primary" id="evalCvBtn" type="button">Run CV</button>
+            </div>
+          </section>
+          <section class="panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Summary</p>
+                <h3>Evaluation Output</h3>
+              </div>
+            </div>
+            <div class="registry-summary" id="evalSummary">No evaluation payload loaded.</div>
+          </section>
+        </div>
+        <section class="panel output-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Payload</p>
+              <h3>Evaluation Response</h3>
+            </div>
+          </div>
+          <pre id="evalRaw">No evaluation response yet.</pre>
+        </section>
+      </section>
+
+      <section class="view" id="models">
+        <div class="hero-panel">
+          <div>
+            <p class="eyebrow">Model Registry</p>
+            <h3>Runs, production model, and promotion</h3>
+          </div>
+          <div class="action-row">
+            <button class="button secondary" id="modelsLoadBtn" type="button">Load Runs</button>
+            <button class="button secondary" id="productionLoadBtn" type="button">Load Production</button>
+            <button class="button secondary" id="checkpointLoadBtn" type="button">Load Checkpoint</button>
+          </div>
+        </div>
+
+        <div class="work-grid">
+          <section class="panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Registry</p>
+                <h3>Model Runs</h3>
+              </div>
+            </div>
+            <div class="table-wrap" id="modelsTable">
+              <div class="empty-line">No model runs loaded.</div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Production</p>
+                <h3>Promote Run</h3>
+              </div>
+            </div>
+            <form id="promoteForm">
+              <div class="form-grid single">
+                <label>Run ID
+                  <input name="run_id" placeholder="Paste run ID" autocomplete="off" />
+                </label>
+              </div>
+              <button class="button danger" id="promoteBtn" type="submit">Promote to Production</button>
+            </form>
+            <div class="registry-summary" id="productionModelSummary">No production model loaded.</div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Checkpoint</p>
+                <h3>Runtime Load Status</h3>
+              </div>
+            </div>
+            <div class="registry-summary" id="checkpointSummary">No checkpoint status loaded.</div>
+            <div class="checkpoint-contract" id="checkpointContract">
+              <div class="empty-line">Load checkpoint status to inspect artifact, registry, and evaluation readiness.</div>
+            </div>
+          </section>
+        </div>
+
+        <section class="panel output-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Payload</p>
+              <h3>Registry Response</h3>
+            </div>
+          </div>
+          <pre id="modelsRaw">No registry response yet.</pre>
+        </section>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

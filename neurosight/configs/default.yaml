@@ -1,0 +1,33 @@
+project:
+  name: neurosight
+  version: "0.3.0"
+
+seed: 42
+
+data:
+  csv_path: "data/ADNIMERGE_synthetic.csv"
+  mri_dir: null
+  eeg_dir: null
+  batch_size: 16
+  num_workers: 2
+  split_seed: 42
+
+model:
+  n_classes: 6
+  mri_dim: 768
+  eeg_dim: 256
+  cog_dim: 64
+  fusion_dim: 512
+
+training:
+  warmup_epochs: 10
+  finetune_epochs: 40
+  lr_warmup: 1e-3
+  lr_finetune: 1e-4
+  weight_decay: 0.01
+  patience: 10
+  checkpoint_dir: "checkpoints/"
+
+mlflow:
+  experiment_name: "neurosight_training"
+  tracking_uri: null

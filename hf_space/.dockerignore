@@ -1,0 +1,53 @@
+# HuggingFace Space .dockerignore
+# Security: never bake secrets into the image
+.env
+.env.*
+.env.local
+.env.production
+
+# Python artefacts
+*.pyc
+*.pyo
+__pycache__
+*.egg-info
+dist/
+build/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+
+# VCS
+.git
+.gitignore
+.gitattributes
+.github/
+
+# Local dev
+.venv/
+venv/
+
+# Large model files — reference via HF Hub model IDs instead
+*.pt
+*.pth
+*.ckpt
+*.bin
+*.safetensors
+
+# Data / notebooks
+data/
+datasets/
+notebooks/
+*.ipynb
+.ipynb_checkpoints/
+
+# Logs / temp
+*.log
+*.tmp
+DEPLOY_LOG.md
+deploy_and_run.py
+local_ui/
+hf_space/
+
+# OS junk
+.DS_Store
+Thumbs.db

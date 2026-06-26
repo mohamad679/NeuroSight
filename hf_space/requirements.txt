@@ -1,0 +1,31 @@
+# NeuroSight HuggingFace Gradio Space — runtime requirements
+# Lean install: no MONAI/MNE for fast startup (<30s)
+# MRI/EEG branches use missing-modality tokens on Spaces
+
+# Prefer CPU-only PyTorch for fast install on Spaces
+--index-url https://download.pytorch.org/whl/cpu
+--extra-index-url https://pypi.org/simple
+
+# UI framework — gradio 5.x is compatible with huggingface_hub>=1.0
+gradio>=5.7.1,<5.50
+
+# Core ML
+torch==2.2.0
+einops>=0.7,<0.9
+
+# Data science
+numpy>=1.26.0,<2.0
+pandas>=2.1,<2.3
+scikit-learn>=1.4,<1.8
+matplotlib>=3.8,<3.10
+
+# Agentic orchestration
+langgraph==0.1.1
+langchain==0.2.0
+langchain-core>=0.2,<0.3
+
+# Knowledge graph
+networkx==3.2
+
+# Calibration/metrics
+shap==0.44.0

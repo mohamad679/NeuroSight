@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  neurosight-api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - REDIS_URL=redis://redis:6379
+      - POSTGRES_URL=postgresql://user:${POSTGRES_PASSWORD}@postgres:5432/neurosight
+      - NEO4J_URI=bolt://neo4j:7687
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - NEO4J_PASSWORD=${NEO4J_PASSWORD}
+    depends_on:
+      - redis
+      - postgres
+      - neo4j
+    restart: always
+
+  redis:
+    image: redis:6-alpine
+    ports:
+      - "6379:6379"
+    restart: always
+
+  postgres:
+    image: postgres:13
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=neurosight
+    ports:
+      - "5432:5432"
+    restart: always
+
+  neo4j:
+    image: neo4j:5
+    environment:
+      - NEO4J_AUTH=neo4j/${NEO4J_PASSWORD}
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    restart: always
+
+  mlflow:
+    image: python:3.11-slim
+    command: >
+      bash -c "pip install mlflow psycopg2-binary &&
+               mlflow server --backend-store-uri postgresql://user:${POSTGRES_PASSWORD}@postgres:5432/neurosight --host 0.0.0.0"
+    ports:
+      - "5000:5000"
+    depends_on:
+      - postgres
+    restart: always

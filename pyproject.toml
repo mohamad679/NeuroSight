@@ -1,0 +1,78 @@
+[tool.poetry]
+name = "neurosight"
+version = "0.3.0"
+description = "Research scaffold for multimodal neurological AI with MRI, EEG, and cognitive fusion."
+authors = ["Mohsen Shamsi Jazeb"]
+package-mode = false
+
+# Canonical reviewer/CI installs use pip with requirements-dev.txt constrained
+# by requirements.lock. Poetry metadata is retained for package metadata and
+# compatibility, but poetry.lock is not the canonical lockfile for this release.
+
+[tool.poetry.dependencies]
+python = ">=3.11,<3.12"
+torch = "2.2.0"
+monai = "1.3.0"
+einops = ">=0.7,<0.9"
+mne = "1.6.0"
+langgraph = "0.1.1"
+langchain = "0.2.0"
+fastapi = "0.111.0"
+uvicorn = ">=0.29,<0.31"
+python-multipart = ">=0.0.9,<0.0.21"
+slowapi = ">=0.1.9,<0.2"
+gradio = ">=4.40,<4.45"
+requests = ">=2.31,<2.33"
+python-dotenv = ">=1.0,<1.2"
+networkx = "3.2"
+numpy = ">=1.26,<2.0"
+pandas = ">=2.1,<2.3"
+matplotlib = ">=3.8,<3.10"
+scikit-learn = ">=1.4,<1.8"
+shap = "0.44.0"
+grad-cam = "1.4.0"
+mlflow = "2.12.0"
+opentelemetry-api = ">=1.24,<2"
+opentelemetry-sdk = ">=1.24,<2"
+opentelemetry-instrumentation-fastapi = ">=0.45b0,<1"
+opentelemetry-exporter-otlp = ">=1.24,<2"
+flwr = "1.8.0"
+hydra-core = "1.3.0"
+redis = ">=5.0,<5.1"
+psycopg2-binary = ">=2.9,<2.10"
+huggingface-hub = "<1.0"
+nibabel = ">=5.2,<5.4"
+pydicom = ">=2.4,<3.1"
+
+[tool.poetry.group.onnx]
+optional = true
+
+[tool.poetry.group.onnx.dependencies]
+onnx = ">=1.16,<2"
+onnxruntime = ">=1.17,<2"
+
+[tool.poetry.group.dev.dependencies]
+pytest = ">=8.0,<8.4"
+pytest-asyncio = ">=0.23,<0.25"
+pytest-timeout = ">=2.3,<2.4"
+httpx = ">=0.27,<0.28"
+ruff = ">=0.4,<0.6"
+mypy = ">=1.10,<1.12"
+pytest-cov = ">=5.0,<5.1"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "unit: fast unit tests",
+    "integration: essential integration tests",
+    "slow: CPU-heavy or long-running tests",
+    "benchmark: benchmark and baseline execution tests",
+    "safety: safety and red-team regression tests",
+]
+filterwarnings = [
+    "error::DeprecationWarning:evaluation.benchmark",
+]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

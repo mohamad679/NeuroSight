@@ -1,0 +1,132 @@
+# Local secrets and environment files
+.env
+.env.*
+!.env.example
+!.env.local.example
+frontend/.env
+frontend/.env.*
+!frontend/.env.example
+!frontend/.env.local.example
+
+# Python caches, environments, and packaging output
+__pycache__/
+*.py[cod]
+*$py.class
+.python-version
+.venv/
+venv/
+env/
+ENV/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+.cache/
+.turbo/
+.parcel-cache/
+.nyc_output/
+.coverage
+coverage.xml
+htmlcov/
+coverage/
+dist/
+build/
+*.egg-info/
+*.tsbuildinfo
+*.tmp
+*.bak
+*.orig
+*~
+/test_*.txt
+/test_*.json
+/*_out.txt
+/pytest_out.txt
+/test_output.txt
+/py_version*.txt
+
+# Logs, local run output, and experiment stores
+logs/
+outputs/
+multirun/
+.hydra/
+*.log
+mlruns/
+mlartifacts/
+wandb/
+lightning_logs/
+runs/
+
+# Model/data artifacts generated locally
+data/
+checkpoints/
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+*.onnx
+*.ort
+*.bin
+
+# Keep public synthetic/demo data intentional; ignore private or raw expansions.
+data/*
+!data/ADNIMERGE_synthetic.csv
+!data/neurosight_kg.json
+!data/processed/
+data/processed/*
+!data/processed/.gitkeep
+data/private/
+data/external/
+data/interim/
+data/uploads/
+data/mri/
+data/eeg/
+uploads/
+tmp_uploads/
+
+# Frontend dependencies and build artifacts
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/dist/
+frontend/build/
+frontend/coverage/
+frontend/tsconfig.tsbuildinfo
+frontend/.turbo/
+frontend/.cache/
+frontend/.vite/
+frontend/.parcel-cache/
+frontend/.nyc_output/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Local deployment and cloud staging output
+.deploy/
+.serverless/
+.vercel/
+.netlify/
+.aws-sam/
+
+# OS, editor, and assistant-local files
+.DS_Store
+**/.DS_Store
+Thumbs.db
+__MACOSX/
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+
+# Accidental duplicate copies from Finder/manual exports
+* copy*
+* Copy*
+* 2.*
+* 2
+.vscode/
+.idea/
+*.code-workspace
+CLAUDE.md
+.claude/
+.codex/
+.cursor/
+.windsurf/

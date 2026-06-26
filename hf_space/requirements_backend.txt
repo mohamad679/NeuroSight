@@ -1,0 +1,42 @@
+# NeuroSight FastAPI Backend — HuggingFace Space runtime requirements
+# Dev/test deps (pytest, mypy, ruff, httpx) intentionally excluded.
+
+# Prefer the PyTorch CPU wheel index on Linux Spaces so pip does not
+# pull the default CUDA-heavy Linux build.
+--index-url https://download.pytorch.org/whl/cpu
+--extra-index-url https://pypi.org/simple
+
+# Web framework
+fastapi==0.111.0
+uvicorn[standard]>=0.29,<0.31
+python-multipart>=0.0.9,<0.0.21
+slowapi>=0.1.9,<0.2
+
+# Deep learning & medical imaging (runs on HF, NOT on local Mac)
+torch==2.2.0
+monai==1.3.0
+einops>=0.7,<0.9
+
+# EEG / signal processing
+mne==1.6.0
+
+# Medical imaging formats
+nibabel>=5.2,<5.4
+pydicom>=2.4,<3.1
+
+# Data science
+numpy>=1.26.0,<2.0
+pandas>=2.1,<2.3
+scikit-learn>=1.4,<1.8
+matplotlib>=3.8,<3.10
+
+# Graph / knowledge base
+networkx==3.2
+
+# Agentic orchestration
+langgraph==0.1.1
+langchain==0.2.0
+langchain-core>=0.2,<0.3
+
+# HuggingFace integration
+huggingface_hub<1.0

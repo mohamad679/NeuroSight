@@ -1,0 +1,10 @@
+stages:
+  provenance_manifest:
+    cmd: python scripts/dvc_provenance.py --output logs/dvc_provenance_manifest.json
+    deps:
+      - scripts/dvc_provenance.py
+      - neurosight/tracking/model_registry.py
+    outs:
+      - logs/dvc_provenance_manifest.json:
+          cache: false
+    always_changed: true

@@ -1,0 +1,5 @@
+# Lightweight local frontend dependencies only.
+# Heavy backend packages (torch, MONAI, MNE) run on Hugging Face, not locally.
+gradio>=4.40,<4.45
+requests>=2.31,<2.33
+python-dotenv>=1.0,<1.2

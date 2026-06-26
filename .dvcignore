@@ -1,0 +1,13 @@
+# Local development noise
+.DS_Store
+**/.DS_Store
+__pycache__/
+*.pyc
+
+# Frontend/build caches
+frontend/node_modules/
+frontend/.next/
+
+# Runtime logs that should not be cached as data artifacts
+logs/frontend_local.log
+*.log

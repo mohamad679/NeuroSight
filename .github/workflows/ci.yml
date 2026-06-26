@@ -1,0 +1,103 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      matrix:
+        python-version: ["3.11"]
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python scripts/check_python_version.py
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements-dev.txt -c requirements.lock
+          python -m pip install flwr==1.8.0 --no-deps
+
+      - name: Set PYTHONPATH
+        run: echo "PYTHONPATH=${{ github.workspace }}" >> $GITHUB_ENV
+
+      - name: Repository hygiene
+        run: make hygiene
+
+      - name: Lint with ruff
+        run: make lint
+
+      - name: Supply-chain audit
+        run: make supply-chain-audit
+
+      - name: Model Card Check
+        run: make model-card-check
+
+      - name: Quality Gate Check
+        run: make quality-gate
+
+      - name: Import smoke
+        env:
+          APP_ENV: test
+        run: make import-smoke
+
+      - name: Run fast tests
+        env:
+          APP_ENV: test
+        run: make test-fast
+
+      - name: Run safety tests
+        env:
+          APP_ENV: test
+        run: make safety
+
+      - name: Run benchmark smoke CLI
+        env:
+          APP_ENV: test
+        run: make benchmark-smoke
+
+      - name: One-command verification
+        env:
+          APP_ENV: test
+        run: make verify HYGIENE_FLAGS=--allow-dev-caches
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: "frontend/package-lock.json"
+
+      - name: Install frontend dependencies
+        run: cd frontend && npm ci
+
+      - name: Check frontend types and build
+        run: cd frontend && npm run type-check && npm run build
+
+      - name: Verify clean working directory
+        run: |
+          git status --porcelain
+          # Confirm no untracked files are generated that violate gitignore rules
+          UNTRACKED=$(git status --porcelain | grep -v 'package-lock.json' || true)
+          if [ -n "$UNTRACKED" ]; then
+            echo "Error: Untracked files detected in repository:"
+            echo "$UNTRACKED"
+            exit 1
+          fi
