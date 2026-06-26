@@ -21,7 +21,7 @@ cryptography>=42.0.4
 grpcio>=1.60.0
 protobuf>=4.25.2
 pycryptodome>=3.18.0
-tomli>=2.0.1
+tomli>=2.4.1
 iterators>=0.0.2
 networkx==3.2
 shap==0.44.0
