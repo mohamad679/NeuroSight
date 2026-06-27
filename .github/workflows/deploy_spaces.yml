@@ -13,15 +13,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0
           lfs: true
           persist-credentials: false
 
-      - name: Push to HuggingFace Spaces
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install deploy dependencies
+        run: python -m pip install --upgrade huggingface_hub
+
+      - name: Deploy staged HuggingFace Space
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
-        run: |
-          git config user.email "action@github.com"
-          git config user.name "GitHub Action"
-          git remote add hf https://mohi679:$HF_TOKEN@huggingface.co/spaces/mohi679/neurosight || true
-          git push hf main --force
+        run: python scripts/deploy_hf_space.py
